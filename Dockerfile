@@ -37,6 +37,9 @@ RUN composer install --no-dev --optimize-autoloader --no-scripts
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 
+RUN chown -R www-data:www-data /var/www/html/public \
+    && chmod -R 755 /var/www/html/public
+
 # Set dynamic port for Railway and expose the correct port
 ENV PORT=8080
 EXPOSE 8080
