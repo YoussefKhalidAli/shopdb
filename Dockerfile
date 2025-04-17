@@ -16,7 +16,8 @@ RUN apt-get update && apt-get install -y \
 # Enable Apache mod_rewrite and adjust DocumentRoot for Laravel public folder
 RUN a2enmod rewrite \
     && sed -i 's|/var/www/html|/var/www/html/public|g' /etc/apache2/sites-available/000-default.conf \
-    && sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /etc/apache2/sites-available/000-default.conf
+    && sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/public|g' /etc/apache2/sites-available/000-default.conf \
+    && service apache2 restart
 
 # Set working directory
 WORKDIR /var/www/html
