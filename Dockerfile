@@ -54,5 +54,7 @@ RUN echo '<Directory /var/www/html/public>' >> /etc/apache2/apache2.conf && \
 ENV PORT=8080
 EXPOSE 8080
 
+RUN php artisan migrate --force
+
 # Start Apache in the foreground
 CMD ["apache2-foreground"]
