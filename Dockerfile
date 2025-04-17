@@ -15,7 +15,6 @@ RUN apt-get update && apt-get install -y \
 
 # Enable Apache mod_rewrite and adjust DocumentRoot for Laravel public folder
 RUN a2enmod rewrite \
-    && sed -i 's|/var/www/html|/var/www/html/|g' /etc/apache2/sites-available/000-default.conf \
     && sed -i 's|DocumentRoot /var/www/html|DocumentRoot /var/www/html/|g' /etc/apache2/sites-available/000-default.conf
 
 # Set the ServerName globally to suppress Apache warnings
@@ -39,6 +38,9 @@ RUN chown -R www-data:www-data /var/www/html \
 
 RUN chown -R www-data:www-data /var/www/html/public \
     && chmod -R 755 /var/www/html/public
+
+# Ensure DirectoryIndex is set to index.php
+RUN echo 'DirectoryIndex index.php' >> /etc/apache2/apache2.conf
 
 # Allow Apache to use .htaccess and override settings in public directory
 RUN echo '<Directory /var/www/html/public>' >> /etc/apache2/apache2.conf && \
