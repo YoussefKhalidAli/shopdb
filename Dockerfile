@@ -33,12 +33,18 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Install Laravel dependencies
 RUN composer install --no-dev --optimize-autoloader --no-scripts
 
-# Set permissions for Laravel storage and cache
+# Set permissions for the entire application and public directory
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+    && chmod -R 755 /var/www/html
 
 RUN chown -R www-data:www-data /var/www/html/public \
     && chmod -R 755 /var/www/html/public
+
+# Allow Apache to use .htaccess and override settings in public directory
+RUN echo '<Directory /var/www/html/public>' >> /etc/apache2/apache2.conf && \
+    echo '    AllowOverride All' >> /etc/apache2/apache2.conf && \
+    echo '    Require all granted' >> /etc/apache2/apache2.conf && \
+    echo '</Directory>' >> /etc/apache2/apache2.conf
 
 # Set dynamic port for Railway and expose the correct port
 ENV PORT=8080
