@@ -32,8 +32,6 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Install Laravel dependencies
 RUN composer install --no-dev --optimize-autoloader --no-scripts
 
-RUN php artisan key:generate --no-interaction
-
 # Set permissions for the entire application and public directory
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html
